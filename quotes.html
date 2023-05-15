@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotes</title>
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/fontawesome.min.css" integrity="sha384-QYIZto+st3yW+o8+5OHfT6S482Zsvz2WfOzpFSXMF9zqeLcFV0/wlZpMtyFcZALm" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="quotes.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- <div id="quotes"></div>
+    <div id="author"></div>
+    <button id="button">quotes</button>
+     <button id="tweet">Tweet</button> -->
+
+     <div class="container">
+        <div class="inner" data-aos="flip-down">
+            <div class="box"  data-aos="zoom-in">
+                <p class="number">
+                    <img src="download.jpg" alt="tweet" title="TweeterLogo" class="tweet" id="tweet">
+                </p>
+                <div class="text">
+                    <i class="start-quote fas fa-quote-left"></i>
+                    <p id="quotes" class="quote"></p>
+                    <p id="author" class="author"></p>
+                </div>
+                <label id="button"><p class="newQ">New Quotes</p></label>
+            </div>
+        </div>
+     </div>
+
+     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+ AOS.init();
+        let jsonData = "";
+        let tweetData ="";
+        const quotes = document.getElementById("quotes");
+        const author = document.getElementById("author");
+        const button = document.getElementById("button");
+        const tweet = document.getElementById("tweet");
+
+        const onTweet = ()=>{
+
+            let tweetPost = `https://twitter.com/intent/tweet?text=${tweetData.text} ${tweetData.author}`;
+            window.open(tweetPost);
+        }
+
+        const getNewQuotes = () => {
+            let rnum = Math.floor(Math.random() * 100);
+            // console.log(rnum);
+            // console.log(jsonData[rnum].text);
+            // console.log(jsonData[rnum].author);
+              tweetData = jsonData[rnum];
+            quotes.innerHTML = `${jsonData[rnum].text}`;
+            
+            jsonData[rnum].author != null ? author.innerHTML = `${jsonData[rnum].author}` : author.innerHTML = `BY Unknown`;
+        }
+
+        const getQuotes = async () => {
+
+            const api = "https://type.fit/api/quotes";
+            try {
+                let data = await fetch(api);
+                jsonData = await data.json();
+                // console.log(jsonData[0].text);
+                getNewQuotes();
+                
+            }
+            catch (error) {
+
+            }
+        }
+        tweet.addEventListener("click",onTweet);
+        button.addEventListener("click", getNewQuotes);
+        getQuotes();
+    </script>
+</body>
+
+</html>
